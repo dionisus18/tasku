@@ -1,7 +1,7 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
-import store from "./store";
+import { store } from "./store";
 import vuetify from "./plugins/vuetify";
 import VueTextareaAutosize from "vue-textarea-autosize";
 
@@ -10,8 +10,8 @@ Vue.use(VueTextareaAutosize);
 import "firebase/firestore";
 import "firebase/auth";
 // Import the functions you need from the SDKs you need
-import { initializeApp , firestore } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { initializeApp, firestore } from "firebase/app";
+// import {  } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -28,12 +28,12 @@ const firebaseConfig = {
 };
 // Initialize Firebase
 /* eslint-disable */
-const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 /* eslint-disable */
-const analytics = getAnalytics(app);
+// const analytics = getAnalytics(app);
 
 /* eslint-disable */
-export const db = firestore;
+export const { db } = firestore;
 
 /* eslint-enable */
 Vue.config.productionTip = false;
