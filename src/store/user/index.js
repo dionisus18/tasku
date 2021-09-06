@@ -18,10 +18,16 @@ export default {
       const credentials = await firebase
         .auth()
         .createUserWithEmailAndPassword(payload.email, payload.password);
-      console.log(credentials)
-      const token = await credentials.user.uid
 
+      const token = await credentials.user.uid
+      console.log(credentials);
+      console.log(token);
       if (token) {
+        const user = firebase.auth().currentUser;
+        if (user !== null) {
+          await user.updateProfile({ displayName: 'invitado' }) 
+        }
+
         firebase
           .firestore()
           .collection("users")
@@ -33,12 +39,13 @@ export default {
           })
           .then(() => {
             commit("setLoading", false);
-            console.log("Document successfully written!");
           })
           .catch((error) => {
             console.error("Error writing document: ", error);
           });
       }
+
+      
     },
     signUserIn({ commit }, payload) {
       commit("setLoading", true);
@@ -59,7 +66,6 @@ export default {
         .catch((error) => {
           commit("setLoading", false);
           commit("setError", error);
-          console.log(error);
         });
     },
     signUserInGoogle({ commit }) {

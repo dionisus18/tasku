@@ -2,6 +2,14 @@
 <v-card class="ma-5">
   <v-sheet>
     <v-form ref="form" v-model="valid" lazy-validation class="pa-4">
+     <v-text-field
+        v-model="name"
+        :counter="15"
+        label="nombre"
+        :class="'pt-4'"
+        required
+      ></v-text-field>
+
       <v-text-field
         v-model="email"
         :counter="10"
@@ -65,11 +73,11 @@ export default {
       this.$refs.form.resetValidation();
     },
     signUp() {
-      console.log("sing up")
       this.$store.dispatch("signUserUp", {
         email: this.email,
         password: this.password,
       });
+      this.$router.push('/about')
     },
     onSigninGoogle() {
       this.$store.dispatch("signUserInGoogle");
