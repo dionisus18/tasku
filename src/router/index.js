@@ -5,7 +5,7 @@ import Register from "../components/Register.vue";
 import Dashboard from "../components/Dashboard.vue";
 import Signup from "../components/Signup.vue";
 import Home from "../views/Home.vue";
-
+import { store } from "../store";
 Vue.use(VueRouter);
 
 const routes = [
@@ -40,6 +40,15 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const user = store.state.user.user;
+  if (to.name !== "Login" && !user.loggedIn) {
+    next({ name: "Login" });
+  } else {
+    next();
+  }
 });
 
 export default router;

@@ -30,6 +30,7 @@
 </template>
 <script>
 import firebase from "firebase";
+
 export default {
   data: () => ({
     valid: false,
@@ -52,7 +53,16 @@ export default {
           .auth()
           .signInWithEmailAndPassword(this.form.email, this.form.password)
           .then(() => {
-            this.$router.replace({ name: "Dashboard" });
+            // Aca hay un problema de asincronismo, pero no se como esperar la segunda llamada,
+            // hay dos soluciones, la documentada que es llamar al fetchUser antes del route
+            // pero se llamaria dos veces seguidas por el watch de firebase, y la otra es un timeout
+            // para que por detras asegurarnos de manera superficial que se actualize el state y asi hacer el route
+            // ninguna de las dos soluciones me parecen mejor, pero el timeout por lo menos no repite las llamadas al
+            // state de vuex
+            //this.$store.dispatch("user/fetchUser", data);
+            setTimeout(() => {
+              this.$router.replace({ name: "Dashboard" });
+            }, 1000);
           })
           .catch((err) => {
             this.error = err.message;

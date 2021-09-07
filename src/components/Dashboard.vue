@@ -1,26 +1,16 @@
 <template>
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="card">
-          <div class="card-header">Dashboard</div>
-          <div class="card-body">
-            <div v-if="user" class="alert alert-success" role="alert">
-              You are logged in!
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <v-card class="ma-5">
+    <v-card-title>Dashboard</v-card-title>
+    <v-card-text v-if="user">You are logged in!</v-card-text>
+  </v-card>
 </template>
 <script>
 import { mapGetters } from "vuex";
 export default {
   computed: {
-    // map `this.user` to `this.$store.getters.user`
+    // map `this.user` to `this.$store.user.getters.user`
     ...mapGetters({
-      user: "user",
+      user: "user/user",
     }),
   },
 };

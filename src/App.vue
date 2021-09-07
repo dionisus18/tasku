@@ -2,8 +2,10 @@
   <v-app id="inspire">
     <NavBar />
     <v-main>
-      <NotificationContainer />
-      <router-view :key="$route.fullPath" />
+      <v-container fluid>
+        <NotificationContainer />
+        <router-view :key="$route.fullPath" />
+      </v-container>
     </v-main>
   </v-app>
 </template>

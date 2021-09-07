@@ -25,13 +25,33 @@
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
       <v-toolbar-title>{{ title }}</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-menu v-if="user.loggedIn" left bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon v-bind="attrs" v-on="on">
+            <v-icon>mdi-heart</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item key="profile" @click="() => {}">
+            <v-list-item-title>{{ user.data.displayName }}</v-list-item-title>
+          </v-list-item>
+          <v-list-item key="logout" @click="signOut()">
+            <v-list-item-title>Desconertarse</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
+import firebase from "firebase";
+
 export default {
   data: () => ({
-    drawer: true,
+    drawer: false,
     links: [
       { showName: "Dashboard", name: "Dashboard" },
       //{ showName: "Realizar Tarea", name: "Home" },
@@ -43,6 +63,19 @@ export default {
   computed: {
     title() {
       return "TaskU";
+    },
+    ...mapGetters({ user: "user/user" }),
+  },
+  methods: {
+    signOut() {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          this.$router.replace({
+            name: "Login",
+          });
+        });
     },
   },
 };
