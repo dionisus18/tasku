@@ -7,16 +7,10 @@ import VueTextareaAutosize from "vue-textarea-autosize";
 
 Vue.use(VueTextareaAutosize);
 
-import "firebase/firestore";
-import "firebase/auth";
-// Import the functions you need from the SDKs you need
-import { initializeApp, firestore } from "firebase/app";
-// import {  } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import * as firebase from "firebase";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+Vue.config.productionTip = false;
+
 const firebaseConfig = {
   apiKey: "AIzaSyBSE48_gMt2ha9ts8T_vFm_al_VHrtzNpc",
   authDomain: "tasku-7d985.firebaseapp.com",
@@ -26,17 +20,12 @@ const firebaseConfig = {
   appId: "1:338066373837:web:48dea31da745377b873d84",
   measurementId: "G-9PBYM41X5C",
 };
-// Initialize Firebase
-/* eslint-disable */
-initializeApp(firebaseConfig);
-/* eslint-disable */
-// const analytics = getAnalytics(app);
 
-/* eslint-disable */
-export const { db } = firestore;
+firebase.initializeApp(firebaseConfig);
 
-/* eslint-enable */
-Vue.config.productionTip = false;
+firebase.auth().onAuthStateChanged((user) => {
+  store.dispatch("user/fetchUser", user);
+});
 
 new Vue({
   router,
