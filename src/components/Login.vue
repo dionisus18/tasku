@@ -1,32 +1,38 @@
 <template>
-  <v-card class="ma-5">
-    <v-sheet>
-      <v-alert v-if="error" dense type="error">
-        {{ error }}
-      </v-alert>
-      <v-form ref="form" v-model="valid" class="pa-4">
-        <v-text-field
-          v-model="form.email"
-          :counter="10"
-          :rules="emailRules"
-          label="email"
-          :class="'pt-4'"
-          required
-        ></v-text-field>
+  <div>
+    <v-alert v-if="error" dense type="error">
+      {{ error }}
+    </v-alert>
+    <v-form ref="form" v-model="valid">
+      <v-text-field
+        v-model="form.email"
+        :counter="10"
+        :rules="emailRules"
+        label="Email"
+        required
+      >
+        <v-icon slot="prepend" color="secondary"> mdi-email </v-icon>
+      </v-text-field>
 
-        <v-text-field
-          v-model="form.password"
-          :rules="passwordRules"
-          label="password"
-          type="password"
-          required
-        ></v-text-field>
-        <v-btn :disabled="!valid" color="success" class="mr-4" @click="login">
-          Login
-        </v-btn>
-      </v-form>
-    </v-sheet>
-  </v-card>
+      <v-text-field
+        v-model="form.password"
+        :rules="passwordRules"
+        label="Contraseña"
+        type="password"
+        required
+      >
+        <v-icon slot="prepend" color="secondary"> mdi-lock </v-icon>
+      </v-text-field>
+      <a href="#">¿Has olvidado tu contraseña?</a>
+      <v-btn
+        class="mt-4 black white--text py-8 rounded-pill"
+        @click="login"
+        width="100%"
+      >
+        Iniciar sesión con TaskU
+      </v-btn>
+    </v-form>
+  </div>
 </template>
 <script>
 import firebase from "firebase";
@@ -40,14 +46,15 @@ export default {
       password: "",
     },
     emailRules: [
-      (v) => !!v || "E-mail is required",
-      (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+      (v) => !!v || "E-mail es requerido",
+      (v) => /.+@.+\..+/.test(v) || "E-mail no es valido",
     ],
-    passwordRules: [(v) => !!v || "E-mail is required"],
+    passwordRules: [(v) => !!v || "Contraseña es requerida"],
   }),
 
   methods: {
     login() {
+      this.$refs.form.validate();
       if (this.valid) {
         firebase
           .auth()
@@ -73,3 +80,8 @@ export default {
   },
 };
 </script>
+<style lang="css" scoped>
+.v-btn {
+  text-transform: none;
+}
+</style>

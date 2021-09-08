@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-navigation-drawer v-model="drawer" app>
+    <v-navigation-drawer v-if="user.loggedIn" v-model="drawer" app>
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="text-h6"> {{ title }} </v-list-item-title>
@@ -22,15 +22,20 @@
       </v-list>
     </v-navigation-drawer>
     <v-app-bar app>
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+        v-if="user.loggedIn"
+        @click="drawer = !drawer"
+      ></v-app-bar-nav-icon>
 
       <v-toolbar-title>{{ title }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu v-if="user.loggedIn" left bottom>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on">
-            <v-icon>mdi-heart</v-icon>
-          </v-btn>
+          <v-avatar color="indigo">
+            <v-btn icon v-bind="attrs" v-on="on">
+              <v-icon>mdi-account-circle</v-icon>
+            </v-btn>
+          </v-avatar>
         </template>
 
         <v-list>

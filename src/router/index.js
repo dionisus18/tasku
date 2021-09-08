@@ -3,7 +3,6 @@ import VueRouter from "vue-router";
 import Login from "../components/Login.vue";
 import Register from "../components/Register.vue";
 import Dashboard from "../components/Dashboard.vue";
-import Signup from "../components/Signup.vue";
 import Home from "../views/Home.vue";
 import { store } from "../store";
 Vue.use(VueRouter);
@@ -29,11 +28,6 @@ const routes = [
     name: "Home",
     component: Home,
   },
-  {
-    path: "/register2",
-    name: "Register2",
-    component: Signup,
-  },
 ];
 
 const router = new VueRouter({
@@ -44,9 +38,20 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const user = store.state.user.user;
-  if (to.name !== "Login" && !user.loggedIn) {
-    next({ name: "Login" });
+  if (!user.loggedIn) {
+    //Si el usuario no esta logeado y va a login o registro dejarlo pasar
+    if (to.name === "Register" || to.name === "Login" || to.name === "Home") {
+      next();
+      //Si no, e intenta ir a otra ruta, entonces devolverlo al login (o home)
+    } else {
+      next({ name: "Home" });
+    }
+    //Si el usuario esta logueado dejarlo ir a cualquier ruta
   } else {
+    //Excepto si quiere ir al login devolverlo de donde vino (puede causar problemas, necesita testing, lo mejor es mandarlo al home)
+    if (to.name === "Login" || to.name === "Register" || to.name === "Home") {
+      next({ name: from.name });
+    }
     next();
   }
 });
